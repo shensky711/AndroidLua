@@ -374,7 +374,6 @@ static JNIEnv *getEnvFromState(lua_State *L);
 *
 *  Function: objectIndex
 *  ****/
-
 int objectIndex(lua_State *L) {
     lua_Number stateIndex;
     const char *key;
@@ -737,7 +736,6 @@ int gc(lua_State *L) {
 *
 *  Function: javaBindClass
 *  ****/
-
 int javaBindClass(lua_State *L) {
     int        top;
     jmethodID  method;
@@ -902,7 +900,6 @@ int createProxy(lua_State *L) {
 *
 *  Function: javaNew
 *  ****/
-
 int javaNew(lua_State *L) {
     int        top;
     jint       ret;
@@ -1001,7 +998,6 @@ int javaNew(lua_State *L) {
 *
 *  Function: javaNewInstance
 *  ****/
-
 int javaNewInstance(lua_State *L) {
     jint       ret;
     jmethodID  method;
@@ -1085,7 +1081,6 @@ int javaNewInstance(lua_State *L) {
 *
 *  Function: javaLoadLib
 *  ****/
-
 int javaLoadLib(lua_State *L) {
     jint       ret;
     int        top;
@@ -1228,7 +1223,6 @@ int pushJavaClass(lua_State *L, jobject javaObject) {
 *
 *  Function: pushJavaObject
 *  ****/
-
 int pushJavaObject(lua_State *L, jobject javaObject) {
     jobject *userData, globalRef;
 
@@ -1244,24 +1238,25 @@ int pushJavaObject(lua_State *L, jobject javaObject) {
     userData = (jobject *) lua_newuserdata(L, sizeof(jobject));
     *userData = globalRef;
 
-    /* Creates metatable */
+    /* 创建 metatable */
     lua_newtable(L);
 
-    /* pushes the __index metamethod */
+    //压入__index方法
     lua_pushstring(L, LUAINDEXMETAMETHODTAG);
     lua_pushcfunction(L, &objectIndex);
     lua_rawset(L, -3);
 
-    /* pushes the __gc metamethod */
+    //压入—__gc方法
     lua_pushstring(L, LUAGCMETAMETHODTAG);
     lua_pushcfunction(L, &gc);
     lua_rawset(L, -3);
 
-    /* Is Java Object boolean */
+    //压入__IsJavaObject变量
     lua_pushstring(L, LUAJAVAOBJECTIND);
     lua_pushboolean(L, 1);
     lua_rawset(L, -3);
 
+    //设置元表
     if (lua_setmetatable(L, -2) == 0) {
         lua_pushstring(L, "Cannot create proxy to java object.");
         lua_error(L);
@@ -1299,7 +1294,6 @@ int isJavaObject(lua_State *L, int idx) {
 *
 *  Function: getStateFromCPtr
 *  ****/
-
 lua_State *getStateFromCPtr(JNIEnv *env, jobject cptr) {
     lua_State *L;
 
@@ -1407,10 +1401,10 @@ JNIEnv *getEnvFromState(lua_State *L) {
 *
 *  Function: pushJNIEnv
 *  ****/
-
 void pushJNIEnv(JNIEnv *env, lua_State *L) {
     JNIEnv **udEnv;
 
+    //获得LUA_REGISTRYINDEX索引的表中以LUAJAVAJNIENVTAG为key的值
     lua_pushstring(L, LUAJAVAJNIENVTAG);
     lua_rawget(L, LUA_REGISTRYINDEX);
 
@@ -1431,7 +1425,7 @@ void pushJNIEnv(JNIEnv *env, lua_State *L) {
 }
 
 /*
-** Assumes the table is on top of the stack.
+** 初始化luajava全局变量描述信息,初始化前需确保luajava处于栈顶
 */
 static void set_info(lua_State *L) {
     lua_pushliteral (L, "_COPYRIGHT");
@@ -1454,7 +1448,6 @@ static void set_info(lua_State *L) {
 *   JNI Called function
 *      LuaJava API Functin
 ************************************************************************/
-
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         (JNIEnv *env, jobject jobj, jobject cptr, jint stateId) {
     lua_State *L;
@@ -1463,19 +1456,19 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
 
     L = getStateFromCPtr(env, cptr);
 
+    //把 LUAJAVASTATEINDEX stateId键值对放入table
     lua_pushstring(L, LUAJAVASTATEINDEX);
     lua_pushnumber(L, (lua_Number) stateId);
     lua_settable(L, LUA_REGISTRYINDEX);
 
-
+    //把table传入到Lua全局变量,变量名为luajava
     lua_newtable(L);
-
     lua_setglobal(L, "luajava");
 
     lua_getglobal(L, "luajava");
-
     set_info(L);
 
+    //为luajava添加方法,
     lua_pushstring(L, "bindClass");
     lua_pushcfunction(L, &javaBindClass);
     lua_settable(L, -3);
@@ -1498,6 +1491,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
 
     lua_pop(L, 1);
 
+    //创建LuaJavaAPI的class类的全局引用
     if (luajava_api_class == NULL) {
         tempClass = (*env)->FindClass(env, "org/keplerproject/luajava/LuaJavaAPI");
 
@@ -1512,6 +1506,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         }
     }
 
+    //创建JavaFunction的class类的全局引用
     if (java_function_class == NULL) {
         tempClass = (*env)->FindClass(env, "org/keplerproject/luajava/JavaFunction");
 
@@ -1526,6 +1521,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         }
     }
 
+    //创建JavaFunction中execute方法的全局引用
     if (java_function_method == NULL) {
         java_function_method = (*env)->GetMethodID(env, java_function_class, "execute", "()I");
         if (!java_function_method) {
@@ -1534,6 +1530,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         }
     }
 
+    //创建Throwable的class类的全局引用
     if (throwable_class == NULL) {
         tempClass = (*env)->FindClass(env, "java/lang/Throwable");
 
@@ -1550,6 +1547,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         }
     }
 
+    //创建Throwable中getMessage方法的全局引用
     if (get_message_method == NULL) {
         get_message_method = (*env)->GetMethodID(env, throwable_class, "getMessage",
                                                  "()Ljava/lang/String;");
@@ -1560,6 +1558,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState_luajava_1open
         }
     }
 
+    //创建Class的class类的全局引用
     if (java_lang_class == NULL) {
         tempClass = (*env)->FindClass(env, "java/lang/Class");
 
@@ -1620,12 +1619,9 @@ JNIEXPORT jboolean JNICALL Java_org_keplerproject_luajava_LuaState__1isObject
 *   JNI Called function
 *      LuaJava API Functin
 ************************************************************************/
-
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushJavaObject
         (JNIEnv *env, jobject jobj, jobject cptr, jobject obj) {
-    /* Get luastate */
     lua_State *L = getStateFromCPtr(env, cptr);
-
     pushJavaObject(L, obj);
 }
 
@@ -1634,7 +1630,6 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushJavaObject
 *   JNI Called function
 *      LuaJava API Functin
 ************************************************************************/
-
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushJavaFunction
         (JNIEnv *env, jobject jobj, jobject cptr, jobject obj) {
     /* Get luastate */
@@ -1699,7 +1694,6 @@ JNIEXPORT jboolean JNICALL Java_org_keplerproject_luajava_LuaState__1isJavaFunct
 *   JNI Called function
 *      Lua Exported Function
 ************************************************************************/
-
 JNIEXPORT jobject JNICALL Java_org_keplerproject_luajava_LuaState__1open
         (JNIEnv *env, jobject jobj) {
     lua_State *L = lua_open();
@@ -1850,7 +1844,6 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1openPackage
 *   JNI Called function
 *      Lua Exported Function
 ************************************************************************/
-
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1openLibs
         (JNIEnv *env, jobject jobj, jobject cptr) {
     lua_State *L = getStateFromCPtr(env, cptr);

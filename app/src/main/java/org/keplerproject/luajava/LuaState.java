@@ -143,6 +143,11 @@ public class LuaState {
      * Lua Native Interface
      *************************/
 
+    /**
+     * 创建lua_State并把其地址设置到{@link CPtr#peer}中
+     *
+     * @return {@link CPtr}实例
+     */
     private synchronized native CPtr _open();
 
     private synchronized native void _close(CPtr ptr);

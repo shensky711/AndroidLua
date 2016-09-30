@@ -182,7 +182,9 @@ LUA_API void lua_remove(lua_State *L, int idx) {
     lua_unlock(L);
 }
 
-
+/**
+ * 把栈顶元素挪到index位置，原index位置的元素往栈顶移动
+ */
 LUA_API void lua_insert(lua_State *L, int idx) {
     StkId p;
     StkId q;
@@ -558,7 +560,9 @@ LUA_API void lua_getfield(lua_State *L, int idx, const char *k) {
     lua_unlock(L);
 }
 
-
+/**
+ * 获得idx索引的表中以栈顶为key的值
+ */
 LUA_API void lua_rawget(lua_State *L, int idx) {
     StkId t;
     lua_lock(L);
@@ -641,10 +645,8 @@ LUA_API void lua_getfenv(lua_State *L, int idx) {
 
 
 /*
-** set functions (stack -> Lua)
+** 以栈顶元素为value，栈顶下一元素为key，设置指定索引的表的值
 */
-
-
 LUA_API void lua_settable(lua_State *L, int idx) {
     StkId t;
     lua_lock(L);
@@ -670,7 +672,9 @@ LUA_API void lua_setfield(lua_State *L, int idx, const char *k) {
     lua_unlock(L);
 }
 
-
+/**
+ * 设置idx索引的表，添加键值对，以栈顶下一个元素为key,栈顶元素为value
+ */
 LUA_API void lua_rawset(lua_State *L, int idx) {
     StkId t;
     lua_lock(L);
@@ -696,7 +700,9 @@ LUA_API void lua_rawseti(lua_State *L, int idx, int n) {
     lua_unlock(L);
 }
 
-
+/**
+ * 设置栈顶table为指定index的table的metatable
+ */
 LUA_API int lua_setmetatable(lua_State *L, int objindex) {
     TValue *obj;
     Table  *mt;
@@ -1022,7 +1028,9 @@ LUA_API void lua_setallocf(lua_State *L, lua_Alloc f, void *ud) {
     lua_unlock(L);
 }
 
-
+/**
+ *  函数按照指定的大小分配一块内存，将对应的userdata放到栈内
+ */
 LUA_API void *lua_newuserdata(lua_State *L, size_t size) {
     Udata *u;
     lua_lock(L);
