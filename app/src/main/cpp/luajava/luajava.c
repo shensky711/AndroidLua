@@ -57,12 +57,12 @@
 #define LUAJAVAOBJFUNCCALLED  "__FunctionCalled"
 
 
-static jclass throwable_class = NULL;
-static jmethodID get_message_method = NULL;
-static jclass java_function_class = NULL;
+static jclass    throwable_class      = NULL;
+static jmethodID get_message_method   = NULL;
+static jclass    java_function_class  = NULL;
 static jmethodID java_function_method = NULL;
-static jclass luajava_api_class = NULL;
-static jclass java_lang_class = NULL;
+static jclass    luajava_api_class    = NULL;
+static jclass    java_lang_class      = NULL;
 
 
 /***************************************************************************
@@ -378,12 +378,12 @@ static JNIEnv *getEnvFromState(lua_State *L);
 int objectIndex(lua_State *L) {
     lua_Number stateIndex;
     const char *key;
-    jmethodID method;
-    jint checkField;
-    jobject *obj;
-    jstring str;
+    jmethodID  method;
+    jint       checkField;
+    jobject    *obj;
+    jstring    str;
     jthrowable exp;
-    JNIEnv *javaEnv;
+    JNIEnv     *javaEnv;
 
     /* Gets the luaState index */
     lua_pushstring(L, LUAJAVASTATEINDEX);
@@ -429,7 +429,7 @@ int objectIndex(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *cStr;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -442,7 +442,7 @@ int objectIndex(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         cStr = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -486,13 +486,13 @@ int objectIndex(lua_State *L) {
 
 int objectIndexReturn(lua_State *L) {
     lua_Number stateIndex;
-    jobject *pObject;
-    jmethodID method;
+    jobject    *pObject;
+    jmethodID  method;
     jthrowable exp;
     const char *methodName;
-    jint ret;
-    jstring str;
-    JNIEnv *javaEnv;
+    jint       ret;
+    jstring    str;
+    JNIEnv     *javaEnv;
 
     /* Gets the luaState index */
     lua_pushstring(L, LUAJAVASTATEINDEX);
@@ -560,7 +560,7 @@ int objectIndexReturn(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *cStr;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -573,7 +573,7 @@ int objectIndexReturn(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         cStr = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -599,13 +599,13 @@ int objectIndexReturn(lua_State *L) {
 
 int classIndex(lua_State *L) {
     lua_Number stateIndex;
-    jobject *obj;
-    jmethodID method;
+    jobject    *obj;
+    jmethodID  method;
     const char *fieldName;
-    jstring str;
-    jint ret;
+    jstring    str;
+    jint       ret;
     jthrowable exp;
-    JNIEnv *javaEnv;
+    JNIEnv     *javaEnv;
 
     /* Gets the luaState index */
     lua_pushstring(L, LUAJAVASTATEINDEX);
@@ -656,7 +656,7 @@ int classIndex(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *cStr;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -669,7 +669,7 @@ int classIndex(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         cStr = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -712,7 +712,7 @@ int classIndex(lua_State *L) {
 
 int gc(lua_State *L) {
     jobject *pObj;
-    JNIEnv *javaEnv;
+    JNIEnv  *javaEnv;
 
     if (!isJavaObject(L, 1)) {
         return 0;
@@ -739,13 +739,13 @@ int gc(lua_State *L) {
 *  ****/
 
 int javaBindClass(lua_State *L) {
-    int top;
-    jmethodID method;
+    int        top;
+    jmethodID  method;
     const char *className;
-    jstring javaClassName;
-    jobject classInstance;
+    jstring    javaClassName;
+    jobject    classInstance;
     jthrowable exp;
-    JNIEnv *javaEnv;
+    JNIEnv     *javaEnv;
 
     top = lua_gettop(L);
 
@@ -779,7 +779,7 @@ int javaBindClass(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *cStr;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -792,7 +792,7 @@ int javaBindClass(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         cStr = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -817,13 +817,13 @@ int javaBindClass(lua_State *L) {
 *  Function: createProxy
 *  ****/
 int createProxy(lua_State *L) {
-    jint ret;
+    jint       ret;
     lua_Number stateIndex;
     const char *impl;
-    jmethodID method;
+    jmethodID  method;
     jthrowable exp;
-    jstring str;
-    JNIEnv *javaEnv;
+    jstring    str;
+    JNIEnv     *javaEnv;
 
     if (lua_gettop(L) != 2) {
         lua_pushstring(L, "Error. Function createProxy expects 2 arguments.");
@@ -868,7 +868,7 @@ int createProxy(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *cStr;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -881,7 +881,7 @@ int createProxy(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         cStr = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -904,15 +904,15 @@ int createProxy(lua_State *L) {
 *  ****/
 
 int javaNew(lua_State *L) {
-    int top;
-    jint ret;
-    jclass clazz;
-    jmethodID method;
-    jobject classInstance;
+    int        top;
+    jint       ret;
+    jclass     clazz;
+    jmethodID  method;
+    jobject    classInstance;
     jthrowable exp;
-    jobject *userData;
+    jobject    *userData;
     lua_Number stateIndex;
-    JNIEnv *javaEnv;
+    JNIEnv     *javaEnv;
 
     top = lua_gettop(L);
 
@@ -971,7 +971,7 @@ int javaNew(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *str;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -982,7 +982,7 @@ int javaNew(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         str = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -1003,13 +1003,13 @@ int javaNew(lua_State *L) {
 *  ****/
 
 int javaNewInstance(lua_State *L) {
-    jint ret;
-    jmethodID method;
+    jint       ret;
+    jmethodID  method;
     const char *className;
-    jstring javaClassName;
+    jstring    javaClassName;
     jthrowable exp;
     lua_Number stateIndex;
-    JNIEnv *javaEnv;
+    JNIEnv     *javaEnv;
 
     /* Gets the luaState index */
     lua_pushstring(L, LUAJAVASTATEINDEX);
@@ -1050,7 +1050,7 @@ int javaNewInstance(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *str;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -1063,7 +1063,7 @@ int javaNewInstance(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         str = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -1087,14 +1087,14 @@ int javaNewInstance(lua_State *L) {
 *  ****/
 
 int javaLoadLib(lua_State *L) {
-    jint ret;
-    int top;
+    jint       ret;
+    int        top;
     const char *className, *methodName;
     lua_Number stateIndex;
-    jmethodID method;
+    jmethodID  method;
     jthrowable exp;
-    jstring javaClassName, javaMethodName;
-    JNIEnv *javaEnv;
+    jstring    javaClassName, javaMethodName;
+    JNIEnv     *javaEnv;
 
     top = lua_gettop(L);
 
@@ -1121,7 +1121,7 @@ int javaLoadLib(lua_State *L) {
         lua_error(L);
     }
 
-    className = lua_tostring(L, 1);
+    className  = lua_tostring(L, 1);
     methodName = lua_tostring(L, 2);
 
     /* Gets the JNI Environment */
@@ -1134,7 +1134,7 @@ int javaLoadLib(lua_State *L) {
     method = (*javaEnv)->GetStaticMethodID(javaEnv, luajava_api_class, "javaLoadLib",
                                            "(ILjava/lang/String;Ljava/lang/String;)I");
 
-    javaClassName = (*javaEnv)->NewStringUTF(javaEnv, className);
+    javaClassName  = (*javaEnv)->NewStringUTF(javaEnv, className);
     javaMethodName = (*javaEnv)->NewStringUTF(javaEnv, methodName);
 
     ret = (*javaEnv)->CallStaticIntMethod(javaEnv, luajava_api_class, method, (jint) stateIndex,
@@ -1144,7 +1144,7 @@ int javaLoadLib(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *str;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -1158,7 +1158,7 @@ int javaLoadLib(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         str = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -1303,9 +1303,9 @@ int isJavaObject(lua_State *L, int idx) {
 lua_State *getStateFromCPtr(JNIEnv *env, jobject cptr) {
     lua_State *L;
 
-    jclass classPtr = (*env)->GetObjectClass(env, cptr);
+    jclass   classPtr     = (*env)->GetObjectClass(env, cptr);
     jfieldID CPtr_peer_ID = (*env)->GetFieldID(env, classPtr, "peer", "J");
-    jbyte *peer = (jbyte *) (*env)->GetLongField(env, cptr, CPtr_peer_ID);
+    jbyte    *peer        = (jbyte *) (*env)->GetLongField(env, cptr, CPtr_peer_ID);
 
     L = (lua_State *) peer;
 
@@ -1321,10 +1321,10 @@ lua_State *getStateFromCPtr(JNIEnv *env, jobject cptr) {
 *  ****/
 
 int luaJavaFunctionCall(lua_State *L) {
-    jobject *obj;
+    jobject    *obj;
     jthrowable exp;
-    int ret;
-    JNIEnv *javaEnv;
+    int        ret;
+    JNIEnv     *javaEnv;
 
     if (!isJavaObject(L, 1)) {
         lua_pushstring(L, "Not a java Function.");
@@ -1353,7 +1353,7 @@ int luaJavaFunctionCall(lua_State *L) {
 
     /* Handles exception */
     if (exp != NULL) {
-        jobject jstr;
+        jobject    jstr;
         const char *str;
 
         (*javaEnv)->ExceptionClear(javaEnv);
@@ -1364,7 +1364,7 @@ int luaJavaFunctionCall(lua_State *L) {
 
             methodId = (*javaEnv)->GetMethodID(javaEnv, throwable_class, "toString",
                                                "()Ljava/lang/String;");
-            jstr = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
+            jstr     = (*javaEnv)->CallObjectMethod(javaEnv, exp, methodId);
         }
 
         str = (*javaEnv)->GetStringUTFChars(javaEnv, jstr, NULL);
@@ -1588,7 +1588,7 @@ JNIEXPORT jobject JNICALL Java_org_keplerproject_luajava_LuaState__1getObjectFro
         (JNIEnv *env, jobject jobj, jobject cptr, jint index) {
     /* Get luastate */
     lua_State *L = getStateFromCPtr(env, cptr);
-    jobject *obj;
+    jobject   *obj;
 
     if (!isJavaObject(L, index)) {
         (*env)->ThrowNew(env, (*env)->FindClass(env, "java/lang/Exception"),
@@ -1680,7 +1680,7 @@ JNIEXPORT jboolean JNICALL Java_org_keplerproject_luajava_LuaState__1isJavaFunct
         (JNIEnv *env, jobject jobj, jobject cptr, jint idx) {
     /* Get luastate */
     lua_State *L = getStateFromCPtr(env, cptr);
-    jobject *obj;
+    jobject   *obj;
 
     if (!isJavaObject(L, idx)) {
         return JNI_FALSE;
@@ -1705,7 +1705,7 @@ JNIEXPORT jobject JNICALL Java_org_keplerproject_luajava_LuaState__1open
     lua_State *L = lua_open();
 
     jobject obj;
-    jclass tempClass;
+    jclass  tempClass;
 
     tempClass = (*env)->FindClass(env, "org/keplerproject/luajava/CPtr");
 
@@ -1883,12 +1883,12 @@ JNIEXPORT jobject JNICALL Java_org_keplerproject_luajava_LuaState__1newthread
     lua_State *newThread;
 
     jobject obj;
-    jclass tempClass;
+    jclass  tempClass;
 
     newThread = lua_newthread(L);
 
     tempClass = (*env)->FindClass(env, "org/keplerproject/luajava/CPtr");
-    obj = (*env)->AllocObject(env, tempClass);
+    obj       = (*env)->AllocObject(env, tempClass);
     if (obj) {
         (*env)->SetLongField(env, obj, (*env)->GetFieldID(env, tempClass,
                                                           "peer", "J"), (jlong) L);
@@ -1998,7 +1998,7 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1checkStack
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1xmove
         (JNIEnv *env, jobject jobj, jobject from, jobject to, jint n) {
     lua_State *fr = getStateFromCPtr(env, from);
-    lua_State *t = getStateFromCPtr(env, to);
+    lua_State *t  = getStateFromCPtr(env, to);
 
     lua_xmove(fr, t, (int) n);
 }
@@ -2291,7 +2291,7 @@ JNIEXPORT jobject JNICALL Java_org_keplerproject_luajava_LuaState__1toThread
     lua_State *L, *thr;
 
     jobject obj;
-    jclass tempClass;
+    jclass  tempClass;
 
     L = getStateFromCPtr(env, cptr);
 
@@ -2342,7 +2342,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushNumber
 
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushString__Lorg_keplerproject_luajava_CPtr_2Ljava_lang_String_2
         (JNIEnv *env, jobject jobj, jobject cptr, jstring str) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L = getStateFromCPtr(env, cptr);
     const char *uniStr;
 
     uniStr = (*env)->GetStringUTFChars(env, str, NULL);
@@ -2361,7 +2361,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushString__Lor
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1pushString__Lorg_keplerproject_luajava_CPtr_2_3BI
         (JNIEnv *env, jobject jobj, jobject cptr, jbyteArray bytes, jint n) {
     lua_State *L = getStateFromCPtr(env, cptr);
-    char *cBytes;
+    char      *cBytes;
 
     cBytes = (char *) (*env)->GetByteArrayElements(env, bytes, NULL);
 
@@ -2799,9 +2799,9 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LdoString
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LgetMetaField
         (JNIEnv *env, jobject jobj, jobject cptr, jint obj, jstring e) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L   = getStateFromCPtr(env, cptr);
     const char *str = (*env)->GetStringUTFChars(env, e, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_getmetafield(L, (int) obj, str);
 
@@ -2818,9 +2818,9 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LgetMetaField
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LcallMeta
         (JNIEnv *env, jobject jobj, jobject cptr, jint obj, jstring e) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L   = getStateFromCPtr(env, cptr);
     const char *str = (*env)->GetStringUTFChars(env, e, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_callmeta(L, (int) obj, str);
 
@@ -2837,9 +2837,9 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LcallMeta
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1Ltyperror
         (JNIEnv *env, jobject jobj, jobject cptr, jint nArg, jstring tName) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L    = getStateFromCPtr(env, cptr);
     const char *name = (*env)->GetStringUTFChars(env, tName, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_typerror(L, (int) nArg, name);
 
@@ -2856,9 +2856,9 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1Ltyperror
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LargError
         (JNIEnv *env, jobject jobj, jobject cptr, jint numArg, jstring extraMsg) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L   = getStateFromCPtr(env, cptr);
     const char *msg = (*env)->GetStringUTFChars(env, extraMsg, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_argerror(L, (int) numArg, msg);
 
@@ -2875,7 +2875,7 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LargError
 
 JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1LcheckString
         (JNIEnv *env, jobject jobj, jobject cptr, jint numArg) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L = getStateFromCPtr(env, cptr);
     const char *res;
 
     res = luaL_checkstring(L, (int) numArg);
@@ -2891,10 +2891,10 @@ JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1LcheckString
 
 JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1LoptString
         (JNIEnv *env, jobject jobj, jobject cptr, jint numArg, jstring def) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L = getStateFromCPtr(env, cptr);
     const char *d = (*env)->GetStringUTFChars(env, def, NULL);
     const char *res;
-    jstring ret;
+    jstring    ret;
 
     res = luaL_optstring(L, (int) numArg, d);
 
@@ -2965,7 +2965,7 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LoptInteger
 
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1LcheckStack
         (JNIEnv *env, jobject jobj, jobject cptr, jint sz, jstring msg) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L = getStateFromCPtr(env, cptr);
     const char *m = (*env)->GetStringUTFChars(env, msg, NULL);
 
     luaL_checkstack(L, (int) sz, m);
@@ -3007,9 +3007,9 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1LcheckAny
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LnewMetatable
         (JNIEnv *env, jobject jobj, jobject cptr, jstring tName) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L    = getStateFromCPtr(env, cptr);
     const char *name = (*env)->GetStringUTFChars(env, tName, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_newmetatable(L, name);
 
@@ -3026,7 +3026,7 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LnewMetatable
 
 JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1LgetMetatable
         (JNIEnv *env, jobject jobj, jobject cptr, jstring tName) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L    = getStateFromCPtr(env, cptr);
     const char *name = (*env)->GetStringUTFChars(env, tName, NULL);
 
     luaL_getmetatable(L, name);
@@ -3107,9 +3107,9 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1LsetN
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadFile
         (JNIEnv *env, jobject jobj, jobject cptr, jstring fileName) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L  = getStateFromCPtr(env, cptr);
     const char *fn = (*env)->GetStringUTFChars(env, fileName, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_loadfile(L, fn);
 
@@ -3126,10 +3126,10 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadFile
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadBuffer
         (JNIEnv *env, jobject jobj, jobject cptr, jbyteArray buff, jlong sz, jstring n) {
-    lua_State *L = getStateFromCPtr(env, cptr);
-    jbyte *cBuff = (*env)->GetByteArrayElements(env, buff, NULL);
-    const char *name = (*env)->GetStringUTFChars(env, n, NULL);
-    int ret;
+    lua_State  *L     = getStateFromCPtr(env, cptr);
+    jbyte      *cBuff = (*env)->GetByteArrayElements(env, buff, NULL);
+    const char *name  = (*env)->GetStringUTFChars(env, n, NULL);
+    int        ret;
 
     ret = luaL_loadbuffer(L, (const char *) cBuff, (int) sz, name);
 
@@ -3148,9 +3148,9 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadBuffer
 
 JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadString
         (JNIEnv *env, jobject jobj, jobject cptr, jstring str) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L  = getStateFromCPtr(env, cptr);
     const char *fn = (*env)->GetStringUTFChars(env, str, NULL);
-    int ret;
+    int        ret;
 
     ret = luaL_loadstring(L, fn);
 
@@ -3167,7 +3167,7 @@ JNIEXPORT jint JNICALL Java_org_keplerproject_luajava_LuaState__1LloadString
 
 JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1Lgsub
         (JNIEnv *env, jobject jobj, jobject cptr, jstring s, jstring p, jstring r) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L   = getStateFromCPtr(env, cptr);
     const char *utS = (*env)->GetStringUTFChars(env, s, NULL);
     const char *utP = (*env)->GetStringUTFChars(env, p, NULL);
     const char *utR = (*env)->GetStringUTFChars(env, r, NULL);
@@ -3189,7 +3189,7 @@ JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1Lgsub
 
 JNIEXPORT jstring JNICALL Java_org_keplerproject_luajava_LuaState__1LfindTable
         (JNIEnv *env, jobject jobj, jobject cptr, jint idx, jstring fname, jint szhint) {
-    lua_State *L = getStateFromCPtr(env, cptr);
+    lua_State  *L    = getStateFromCPtr(env, cptr);
     const char *name = (*env)->GetStringUTFChars(env, fname, NULL);
 
     const char *sub = luaL_findtable(L, (int) idx, name, (int) szhint);
