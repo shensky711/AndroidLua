@@ -370,10 +370,9 @@ static JNIEnv *getEnvFromState(lua_State *L);
 
 /********************* Implementations ***************************/
 
-/***************************************************************************
-*
-*  Function: objectIndex
-*  ****/
+/**
+ * 在lua中获取变量的属性或调用变量的方法
+ */
 int objectIndex(lua_State *L) {
     lua_Number stateIndex;
     const char *key;
@@ -384,7 +383,7 @@ int objectIndex(lua_State *L) {
     jthrowable exp;
     JNIEnv     *javaEnv;
 
-    /* Gets the luaState index */
+    /* 获取luaState index */
     lua_pushstring(L, LUAJAVASTATEINDEX);
     lua_rawget(L, LUA_REGISTRYINDEX);
 
@@ -478,11 +477,9 @@ int objectIndex(lua_State *L) {
 }
 
 
-/***************************************************************************
-*
-*  Function: objectIndexReturn
-*  ****/
-
+/**
+ * 在lua中调用变量的方法
+ */
 int objectIndexReturn(lua_State *L) {
     lua_Number stateIndex;
     jobject    *pObject;
@@ -1246,7 +1243,7 @@ int pushJavaObject(lua_State *L, jobject javaObject) {
     lua_pushcfunction(L, &objectIndex);
     lua_rawset(L, -3);
 
-    //压入—__gc方法
+    //压入__gc方法
     lua_pushstring(L, LUAGCMETAMETHODTAG);
     lua_pushcfunction(L, &gc);
     lua_rawset(L, -3);
@@ -1270,7 +1267,6 @@ int pushJavaObject(lua_State *L, jobject javaObject) {
 *
 *  Function: isJavaObject
 *  ****/
-
 int isJavaObject(lua_State *L, int idx) {
     if (!lua_isuserdata(L, idx))
         return 0;
@@ -1412,8 +1408,7 @@ void pushJNIEnv(JNIEnv *env, lua_State *L) {
         udEnv = (JNIEnv **) lua_touserdata(L, -1);
         *udEnv = env;
         lua_pop(L, 1);
-    }
-    else {
+    } else {
         lua_pop(L, 1);
         udEnv = (JNIEnv **) lua_newuserdata(L, sizeof(JNIEnv *));
         *udEnv = env;

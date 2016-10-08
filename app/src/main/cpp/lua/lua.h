@@ -308,7 +308,7 @@ LUA_API void lua_setallocf(lua_State *L, lua_Alloc f, void *ud);
 
 #define lua_register(L, n, f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
 
-#define lua_pushcfunction(L, f)    lua_pushcclosure(L, (f), 0)
+#define lua_pushcfunction(L, f)    lua_pushcclosure(L, (f), 0)//将一个C函数压入堆栈。这个函数接收一个C函数指针，并将一个类型为function的Lua值压入堆栈。当这个栈顶的值被调用时，将触发对应的C函数
 
 #define lua_strlen(L, i)        lua_objlen(L, (i))
 
