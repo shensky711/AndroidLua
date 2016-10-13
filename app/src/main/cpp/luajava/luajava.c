@@ -893,10 +893,9 @@ int createProxy(lua_State *L) {
     return ret;
 }
 
-/***************************************************************************
-*
-*  Function: javaNew
-*  ****/
+/**
+ * 根据class类创建实例对象
+ */
 int javaNew(lua_State *L) {
     int        top;
     jint       ret;
@@ -991,10 +990,9 @@ int javaNew(lua_State *L) {
 }
 
 
-/***************************************************************************
-*
-*  Function: javaNewInstance
-*  ****/
+/**
+ * 根据对象名创建实例对象
+ */
 int javaNewInstance(lua_State *L) {
     jint       ret;
     jmethodID  method;
@@ -1214,6 +1212,7 @@ int pushJavaClass(lua_State *L, jobject javaObject) {
 
     return 1;
 }
+
 
 
 /***************************************************************************
@@ -1609,7 +1608,6 @@ JNIEXPORT jboolean JNICALL Java_org_keplerproject_luajava_LuaState__1isObject
     return (isJavaObject(L, index) ? JNI_TRUE : JNI_FALSE);
 }
 
-
 /************************************************************************
 *   JNI Called function
 *      LuaJava API Functin
@@ -1857,6 +1855,7 @@ JNIEXPORT void JNICALL Java_org_keplerproject_luajava_LuaState__1close
     lua_State *L = getStateFromCPtr(env, cptr);
 
     lua_close(L);
+
 }
 
 
